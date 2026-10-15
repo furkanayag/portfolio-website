@@ -10,6 +10,7 @@
   if (!window.gsap || !window.ScrollTrigger) {
     body.classList.remove('is-loading'); loader.remove(); return;
   }
+  window.__ready = true;
   gsap.registerPlugin(ScrollTrigger);
 
   function splitChars(el) {
@@ -62,10 +63,8 @@
   }
   if (reduce) { loader.remove(); body.classList.remove('is-loading'); }
   else {
-    const n = { v: 0 }, count = $('#count');
     gsap.timeline()
-      .to(n, { v: 100, duration: 1.5, ease: 'power2.inOut', onUpdate: () => count.textContent = Math.round(n.v) })
-      .to(loader, { yPercent: -100, duration: .9, ease: 'power4.inOut', delay: .15, onStart: intro })
+      .to(loader, { yPercent: -100, duration: .9, ease: 'power4.inOut', delay: Math.max(.15, 1.7 - performance.now() / 1000), onStart: intro })
       .set(loader, { display: 'none' });
   }
 

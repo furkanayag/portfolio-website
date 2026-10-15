@@ -16,6 +16,18 @@
   <p class="loader-line">POST /furkan HTTP/1.1</p>
   <p class="loader-count"><span id="count">0</span>%</p>
 </div>
+<script>
+// counter runs on its own so a slow CDN never leaves the page stuck at 0%
+(function () {
+  var c = document.getElementById('count'), s = performance.now();
+  (function f(t) { var p = Math.min(1, (t - s) / 1500); c.textContent = Math.round(p * 100); if (p < 1) requestAnimationFrame(f); })(s);
+  setTimeout(function () {
+    if (window.__ready) return;
+    document.body.classList.remove('is-loading');
+    var l = document.querySelector('.loader'); if (l) l.style.display = 'none';
+  }, 7000);
+})();
+</script>
 
 <div class="cursor" aria-hidden="true"><span class="cursor-label"></span></div>
 <div class="peek" aria-hidden="true"><img alt=""></div>
